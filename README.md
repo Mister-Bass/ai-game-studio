@@ -45,7 +45,9 @@ The build output is dist. Playwright runs against Vite's production preview serv
 
 GitHub Actions runs **Build and browser tests** on every PR, main update, merge queue, and manual run. It builds, runs the browser suite, and produces a ZIP only after passing tests. Download **ai-game-studio-package** in the workflow run's Artifacts section. It contains ai-game-studio.zip, with playable/ (built website) and source/ (reusable template). GitHub may wrap this in an outer ZIP. Game artifacts expire after 30 days; browser reports after 14 days.
 
-The assistant should configure main protection where permissions and plan permit: require PRs, one approving review, dismiss stale approvals, require **Build and browser tests**, require up-to-date branches, prevent force pushes and deletion, and enforce for administrators. Workflow YAML alone cannot enforce merge rules; verify actual repository settings. No workflow here automatically merges or deploys.
+The main branch is protected: pull requests, the **Build and browser tests** GitHub Actions check, and up-to-date branches are required. Administrators cannot bypass the rule; force pushes and deletion are blocked. Workflow YAML alone cannot enforce these rules; the repository settings were configured separately.
+
+PRs created through your connected GitHub identity are authored by you, so GitHub cannot accept your review of your own PR. Your manual decision to merge a passing PR is the approval gate. A separate approving review is not required; if you add another reviewer later, ask the assistant to require one review and dismiss stale approvals. No workflow automatically merges or deploys. The assistant must still wait for your explicit approval before merging.
 
 ## Cloudflare Pages deployment
 
