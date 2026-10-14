@@ -1,0 +1,17 @@
+{
+  "name": "ai-game-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "package": "node scripts/package.mjs"
+  },
+  "dependencies": { "phaser": "^3.90.0" },
+  "devDependencies": { "vite": "^8.3.4", "@playwright/test": "^1.58.0", "fflate": "^0.8.2" },
+  "engines": { "node": ">=22.12.0" }
+}
