@@ -1,9 +1,0 @@
-{
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "ai-game-studio",
-  "compatibility_date": "2026-10-14",
-  "previews": {},
-  "assets": {
-    "directory": "./dist"
-  }
-}

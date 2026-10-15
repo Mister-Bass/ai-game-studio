@@ -68,16 +68,15 @@ Node 24 is recommended. The assistant or developer runs:
     npm ci
     npm run dev
     npm run build
-    npm run deploy:check
     npx playwright install --with-deps chromium firefox webkit
     npm test
     npm run package
 
 The production build is dist. Tests run against Vite’s production preview server. Coverage includes vocabulary completeness, loading, movement and collisions, gates, guide dialogs, numbered answers, mistakes and loss, checkpoint recovery, journal, restart, touch controls, lantern wards, and a full 45-word playthrough through all five chambers.
 
-GitHub Actions runs Build and browser tests for every PR, main update, merge queue, and manual run. It builds, performs a Wrangler dry run, runs the full suite in Chromium, Firefox, and WebKit, and generates a ZIP. In the run’s Artifacts section, download ai-game-studio-package. It contains ai-game-studio.zip with playable/ (built game) and source/ (reusable project). GitHub may wrap that ZIP in another ZIP. Game artifacts last 30 days; browser reports last 14 days.
+GitHub Actions runs Build and browser tests for every PR, main update, merge queue, and manual run. It builds, runs the full suite in Chromium, Firefox, and WebKit, and generates a ZIP. In the run’s Artifacts section, download ai-game-studio-package. It contains ai-game-studio.zip with playable/ (built game) and source/ (reusable project). GitHub may wrap that ZIP in another ZIP. Game artifacts last 30 days; browser reports last 14 days.
 
-## Cloudflare Workers and approval
+## Cloudflare Pages and approval
 
 The existing Cloudflare GitHub connection uses these settings:
 
@@ -86,13 +85,13 @@ The existing Cloudflare GitHub connection uses these settings:
 | Production branch | main |
 | Root directory | repository root |
 | Build command | npm run build |
-| Production deploy command | npx wrangler deploy |
-| PR / branch preview command | npx wrangler preview |
-| Static assets directory | ./dist in wrangler.jsonc |
-| Worker name | ai-game-studio |
+| Build output directory | dist |
+| Pages project | ai-game-studio |
 | Node version | 24 |
 
-wrangler.jsonc retains previews: {} for Cloudflare’s branch-preview command. Wrangler is a locked development dependency. npm run deploy:check performs a non-publishing deployment validation. GitHub Actions only validates and packages; Cloudflare handles the connected builds and previews. Preview URL availability follows the existing dashboard settings.
+Cloudflare Pages builds and publishes the static dist directory through its existing Git integration. There is no deploy command to run, no Worker entry point, and no Wrangler dependency or configuration. PR branches receive Pages preview URLs for review. GitHub Actions validates and packages; Pages handles preview and production hosting. An approved merge to main triggers the connected production build.
+
+Ask for future changes in plain English: “Build the game, run its browser tests, and open a pull request with the Pages preview. Do not merge until I approve.” If an old Workers check says its Worker does not exist, that is a leftover external build connection; do not recreate a Worker to deploy this game. Keep the Pages connection and its Build command npm run build / Build output directory dist.
 
 main is protected by pull requests, the Build and browser tests GitHub Actions check, up-to-date branches, and administrator enforcement. Force pushes and deletion are blocked. Because PRs through the connected GitHub identity are authored by the owner, the owner’s manual merge is the approval gate. The assistant must wait for explicit approval before merging or deploying production.
 
