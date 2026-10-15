@@ -3,7 +3,7 @@
 - The owner requests games in plain English. Implement, test, and document them without asking the owner to edit code.
 - Keep production changes on feature branches and pull requests. Never push directly to main, merge a PR, or deploy production without the owner's approval.
 - Keep reusable UI, controls, responsive sizing, and test coverage when replacing a sample game.
-- Keep lesson content in src/content.js where practical. Use local assets with documented rights.
+- Keep vocabulary in src/vocabulary.js and level/trial content in src/lesson.js. Use local assets with documented rights.
 - Run npm run build, npm test, and npm run package before handing off changes. Report untested behavior.
 - CI required check: Build and browser tests. Do not disable tests to bypass a failing check.
-- Cloudflare Workers: npm run build; deploy with npx wrangler deploy; wrangler.jsonc serves assets from ./dist; Node 24; production branch main. Preview branches are for review.
+- Deploy through the existing Cloudflare Pages Git integration: build npm run build; output dist; Node 24; production branch main. PR branches receive Pages previews for review. Do not add a Workers deploy command or Wrangler configuration for this static game.

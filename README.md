@@ -1,78 +1,98 @@
-# AI Game Studio
+# Lexicon: The Hollow Archive
 
-A reusable HTML5 educational browser game built with Vite, JavaScript, and Phaser. The sample **Number Quest** teaches beginner addition. Move a robot to the correct answer star and solve three puzzles. Correct answers earn 100 stars; three mistakes end the mission. Title, win, loss, restart, keyboard, touch controls, and responsive layout are included.
+An original top-down vocabulary adventure built with Vite, JavaScript, and Phaser. Explore ruined gardens and archives, dispel inkshades with a lantern, solve vocabulary trials, earn rune keys, and open the next gate.
 
-## Request games in plain English
+## Level 1: Digital citizenship and online reputation
 
-You never need to write or edit code. Open this repository in your coding assistant and describe what you want. For example:
+Level 1 uses all 45 terms and their supplied definitions from Module_03_Vocabulary.pdf, provided by the teacher for Principles of Information Technology / CompTIA Digital Literacy v3.0, Module 3. Applied situations and all game artwork are original. The source PDF is not bundled or uploaded to the repository.
 
-> Make a dinosaur game for second graders to practice subtraction up to 20. Use arrow keys, give gentle hints after mistakes, and finish after five correct answers. Keep the title screen, scoring, restart button, and mobile controls. Build it, run browser tests, and open a pull request for my approval. Do not deploy it until I approve.
+The five chambers are:
 
-> Change Number Quest into a forest vocabulary game for ages 8–10. Players collect the word matching a definition. Include ten animal words. Keep production updates in pull requests.
+| Chamber | Vocabulary focus | Terms |
+| --- | --- | --- |
+| The Footprint Garden | Footprints, identity, metadata, and tracking | 9 |
+| The Hall of Mirrors | Media literacy, misleading content, and biases | 10 |
+| The Citizens’ Court | Participation, ethics, accessibility, and online conduct | 7 |
+| The Forge of Ideas | Copyright, intellectual property, licensing, and attribution | 12 |
+| The Sanctum of Trust | Security principles, malware, VPNs, and software rights | 7 |
 
-Include the age or grade, learning goal, theme, controls, scoring rules, and winning conditions if you know them. Otherwise ask the assistant to propose defaults. You can also say “Make it easier,” “Add a space theme,” or “Fix this bug” and explain what happened.
+Each chamber has three numbered rune seals. Each seal presents 2–4 vocabulary questions. Questions alternate between matching a definition to a term, recognizing a concept in an applied situation, and choosing the meaning of a term. Restore all three seals to receive three rune keys, then interact with the eastern gate to continue. Complete all 45 questions and enter the final gate to win.
 
-The assistant should implement your request, update tests, run checks, and provide a PR with a summary and preview. Review and approve when satisfied. Passing CI is not permission to merge or publish. AGENTS.md records this approval requirement for future coding sessions.
+Correct answers earn 25 insight; the maximum is 1,125. Wrong answers cost one heart and show the supplied definition as a learning hint. The same word never awards points twice. Inkshades cost one heart if you step onto them; a lantern ward dispels nearby shades. Entering a new chamber restores one heart, up to five. There is no timer.
 
-## Play
+At zero hearts, Return to chamber restores five hearts and preserves learned words, completed seals, score, and chamber position. Restart adventure resets the entire level. Progress is kept for the current page session; reloading or closing the page resets it. No accounts, student records, analytics, or server storage are used.
 
-- Arrow keys or WASD: move one grid space.
-- Space: collect the star under the robot.
-- Enter: start from the title screen.
-- R or Restart mission: reset score, lives, question, and robot position.
-- On-screen buttons support touch.
+## Controls
 
-There is no time limit. Wrong answers show an explanation and cost a life. The SVGs in public/assets are original placeholder artwork included for reuse and replacement. No external assets, accounts, or analytics are required to play.
+| Action | Keyboard | Touch / mouse |
+| --- | --- | --- |
+| Move | Arrow keys or WASD | Direction buttons under the game |
+| Interact with adjacent seal, Keeper, or gate | E or Space | Interact button |
+| Dispel inkshades within two grid cells | J or Z | Lantern ward button |
+| Answer a vocabulary question | 1–4 | Answer buttons |
+| Open word journal | M | Open word journal button |
+| Close a trial, guide, or journal | Escape | Close button |
+| Start / return after losing | Enter | Begin / Return button |
+| Reset the whole adventure | R | Restart adventure button |
 
-## Template structure and development
+Stone walls, trees, water, and monuments block movement. Stand next to a monument to interact with it. The Keeper beside the starting position explains the rules. The journal stores the definitions of words answered correctly. Puzzle dialogs trap focus and support normal keyboard navigation. The canvas world is visual; this is not a fully nonvisual game.
 
-src/content.js holds lesson questions, answers, lives, and points. src/main.js provides the Phaser scene and game state. index.html and src/style.css provide native buttons, live feedback, overlays, and the responsive shell. tests/game.spec.js exercises real input against the production build; DOM telemetry is read-only, with no test-only game mutation shortcuts.
+## Request changes using plain English
 
-For the assistant or developer, Node 24 is recommended:
+You do not need to write or edit code. Open this repository in your coding assistant, provide a word list or vocabulary PDF, and describe what you want. For example:
 
-```sh
-npm ci
-npm run dev
-npm run build
-npm run deploy:check
-npx playwright install --with-deps chromium firefox webkit
-npm test
-npm run package
-```
+> Make Level 2 use this vocabulary PDF. Keep the top-down adventure and rune trials, but set it in an icy observatory. Include every term, preserve the definitions, and use middle/high-school situations. Run the build and tests and open a pull request. Wait for my approval before merging or publishing.
 
-The build output is dist. Playwright runs against Vite's production preview server. Tests cover loading, assets, movement, boundaries, scoring, win/loss, restart, touch buttons, and a narrow viewport across Chromium, Firefox, and WebKit. The canvas is visual; native buttons and live feedback improve accessibility, but this is not a fully nonvisual game.
+> Make the clues harder and add more context questions. Keep gentle feedback after mistakes. Test the complete level and create a pull request.
 
-## Pull requests, checks, and ZIP downloads
+> Replace the lantern ward with a shield, add a new chamber, or give students more hearts. Update the instructions and tests for me.
 
-GitHub Actions runs **Build and browser tests** on every PR, main update, merge queue, and manual run. It builds, validates the Workers deployment with a Wrangler dry run, runs the browser suite, and produces a ZIP only after passing tests. Download **ai-game-studio-package** in the workflow run's Artifacts section. It contains ai-game-studio.zip, with playable/ (built website) and source/ (reusable template and Wrangler configuration). GitHub may wrap this in an outer ZIP. Game artifacts expire after 30 days; browser reports after 14 days.
+The assistant should extract and check your list, implement the game, run the checks, provide screenshots or a preview, and create a PR. Review it before approving a merge. Passing CI alone does not authorize the assistant to merge or publish.
 
-The main branch is protected: pull requests, the **Build and browser tests** GitHub Actions check, and up-to-date branches are required. Administrators cannot bypass the rule; force pushes and deletion are blocked. Workflow YAML alone cannot enforce these rules; the repository settings were configured separately.
+## Source organization
 
-PRs created through your connected GitHub identity are authored by you, so GitHub cannot accept your review of your own PR. Your manual decision to merge a passing PR is the approval gate. A separate approving review is not required; if you add another reviewer later, ask the assistant to require one review and dismiss stale approvals. No GitHub Actions workflow automatically merges or deploys. The assistant must still wait for your explicit approval before merging.
+- src/vocabulary.js: all 45 source terms and definitions, in the PDF’s order.
+- src/lesson.js: chamber groupings, applied situations, and question construction.
+- src/world.js: passable terrain, monuments, gates, and chamber palettes.
+- src/art.js: original procedural pixel artwork and scenery.
+- src/adventure.js: Phaser scene, movement, trials, hearts, gates, journal, and game states.
+- src/adventure.css and index.html: responsive shell and accessible native controls/dialogs.
+- tests/adventure.spec.js: browser tests using actual keyboard and button input. Read-only DOM state supports assertions; there are no test-only game mutation shortcuts.
 
-## Cloudflare Workers deployment
+All 45 terms are assigned to exactly one chamber. Game art is generated locally in Phaser without external downloads. No original Zelda characters, maps, music, names, or artwork are included.
 
-Cloudflare Workers is already connected to Mister-Bass/ai-game-studio. The repository includes wrangler.jsonc for static asset hosting. It names the Worker ai-game-studio and sets assets.directory to ./dist. Vite creates dist/index.html, the game JavaScript and CSS, and the placeholder assets. No Worker JavaScript entry point is needed for this static game.
+## Build and checks
 
-The connected Workers build uses these settings:
+Node 24 is recommended. The assistant or developer runs:
+
+    npm ci
+    npm run dev
+    npm run build
+    npx playwright install --with-deps chromium firefox webkit
+    npm test
+    npm run package
+
+The production build is dist. Tests run against Vite’s production preview server. Coverage includes vocabulary completeness, loading, movement and collisions, gates, guide dialogs, numbered answers, mistakes and loss, checkpoint recovery, journal, restart, touch controls, lantern wards, and a full 45-word playthrough through all five chambers.
+
+GitHub Actions runs Build and browser tests for every PR, main update, merge queue, and manual run. It builds, runs the full suite in Chromium, Firefox, and WebKit, and generates a ZIP. In the run’s Artifacts section, download ai-game-studio-package. It contains ai-game-studio.zip with playable/ (built game) and source/ (reusable project). GitHub may wrap that ZIP in another ZIP. Game artifacts last 30 days; browser reports last 14 days.
+
+## Cloudflare Pages and approval
+
+The existing Cloudflare GitHub connection uses these settings:
 
 | Setting | Value |
 | --- | --- |
 | Production branch | main |
 | Root directory | repository root |
 | Build command | npm run build |
-| Deploy command | npx wrangler deploy |
-| PR/branch preview command | npx wrangler preview |
-| Static assets directory | ./dist (in wrangler.jsonc) |
-| Worker name | ai-game-studio |
-| NODE_VERSION | 24 |
+| Build output directory | dist |
+| Pages project | ai-game-studio |
+| Node version | 24 |
 
-The npm build script runs vite build. Wrangler is a locked development dependency, so npx wrangler deploy uses the installed version after npm ci. npm run deploy:check runs wrangler deploy --dry-run to validate the deployment without publishing or requiring Cloudflare credentials. Keep main selected as the production branch in the connected Cloudflare build so production updates follow an approved merge. GitHub Actions performs validation and packaging only; it does not publish production. The existing Cloudflare dashboard connection and its production/preview settings are not changed by this configuration PR.
+Cloudflare Pages builds and publishes the static dist directory through its existing Git integration. There is no deploy command to run, no Worker entry point, and no Wrangler dependency or configuration. PR branches receive Pages preview URLs for review. GitHub Actions validates and packages; Pages handles preview and production hosting. An approved merge to main triggers the connected production build.
 
-The connected Cloudflare build runs npx wrangler preview for PR branches. wrangler.jsonc includes an empty previews block to enable that command; previews reuse the top-level static assets and compatibility settings. Production continues to use npx wrangler deploy.
+Ask for future changes in plain English: “Build the game, run its browser tests, and open a pull request with the Pages preview. Do not merge until I approve.” If an old Workers check says its Worker does not exist, that is a leftover external build connection; do not recreate a Worker to deploy this game. Keep the Pages connection and its Build command npm run build / Build output directory dist.
 
-For future changes, say: “Update the game, run the build and Wrangler deployment check, and open a pull request. Wait for my approval before merging or publishing.” If the existing Worker uses a different name, tell the assistant its name and ask it to update the configuration; you do not need to edit code.
+main is protected by pull requests, the Build and browser tests GitHub Actions check, up-to-date branches, and administrator enforcement. Force pushes and deletion are blocked. Because PRs through the connected GitHub identity are authored by the owner, the owner’s manual merge is the approval gate. The assistant must wait for explicit approval before merging or deploying production.
 
-public/_headers is copied into dist for static response headers. Serve the ZIP's playable/ directory over HTTP; double-clicking index.html is unsupported because ES modules require HTTP.
-
-References: [Cloudflare Workers static assets](https://developers.cloudflare.com/workers/static-assets/), [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), [GitHub protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), [Phaser scaling](https://docs.phaser.io/phaser/concepts/scale-manager).
+Serve the ZIP’s playable/ directory over HTTP. Opening index.html directly from disk is unsupported because browser ES modules require HTTP. Physical mobile devices and screen-reader-only gameplay require additional validation.
