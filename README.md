@@ -62,11 +62,14 @@ The connected Workers build uses these settings:
 | Root directory | repository root |
 | Build command | npm run build |
 | Deploy command | npx wrangler deploy |
+| PR/branch preview command | npx wrangler preview |
 | Static assets directory | ./dist (in wrangler.jsonc) |
 | Worker name | ai-game-studio |
 | NODE_VERSION | 24 |
 
 The npm build script runs vite build. Wrangler is a locked development dependency, so npx wrangler deploy uses the installed version after npm ci. npm run deploy:check runs wrangler deploy --dry-run to validate the deployment without publishing or requiring Cloudflare credentials. Keep main selected as the production branch in the connected Cloudflare build so production updates follow an approved merge. GitHub Actions performs validation and packaging only; it does not publish production. The existing Cloudflare dashboard connection and its production/preview settings are not changed by this configuration PR.
+
+The connected Cloudflare build runs npx wrangler preview for PR branches. wrangler.jsonc includes an empty previews block to enable that command; previews reuse the top-level static assets and compatibility settings. Production continues to use npx wrangler deploy.
 
 For future changes, say: “Update the game, run the build and Wrangler deployment check, and open a pull request. Wait for my approval before merging or publishing.” If the existing Worker uses a different name, tell the assistant its name and ask it to update the configuration; you do not need to edit code.
 
