@@ -34,6 +34,7 @@ For the assistant or developer, Node 24 is recommended:
 npm ci
 npm run dev
 npm run build
+npm run deploy:check
 npx playwright install --with-deps chromium firefox webkit
 npm test
 npm run package
@@ -43,27 +44,32 @@ The build output is dist. Playwright runs against Vite's production preview serv
 
 ## Pull requests, checks, and ZIP downloads
 
-GitHub Actions runs **Build and browser tests** on every PR, main update, merge queue, and manual run. It builds, runs the browser suite, and produces a ZIP only after passing tests. Download **ai-game-studio-package** in the workflow run's Artifacts section. It contains ai-game-studio.zip, with playable/ (built website) and source/ (reusable template). GitHub may wrap this in an outer ZIP. Game artifacts expire after 30 days; browser reports after 14 days.
+GitHub Actions runs **Build and browser tests** on every PR, main update, merge queue, and manual run. It builds, validates the Workers deployment with a Wrangler dry run, runs the browser suite, and produces a ZIP only after passing tests. Download **ai-game-studio-package** in the workflow run's Artifacts section. It contains ai-game-studio.zip, with playable/ (built website) and source/ (reusable template and Wrangler configuration). GitHub may wrap this in an outer ZIP. Game artifacts expire after 30 days; browser reports after 14 days.
 
 The main branch is protected: pull requests, the **Build and browser tests** GitHub Actions check, and up-to-date branches are required. Administrators cannot bypass the rule; force pushes and deletion are blocked. Workflow YAML alone cannot enforce these rules; the repository settings were configured separately.
 
-PRs created through your connected GitHub identity are authored by you, so GitHub cannot accept your review of your own PR. Your manual decision to merge a passing PR is the approval gate. A separate approving review is not required; if you add another reviewer later, ask the assistant to require one review and dismiss stale approvals. No workflow automatically merges or deploys. The assistant must still wait for your explicit approval before merging.
+PRs created through your connected GitHub identity are authored by you, so GitHub cannot accept your review of your own PR. Your manual decision to merge a passing PR is the approval gate. A separate approving review is not required; if you add another reviewer later, ask the assistant to require one review and dismiss stale approvals. No GitHub Actions workflow automatically merges or deploys. The assistant must still wait for your explicit approval before merging.
 
-## Cloudflare Pages deployment
+## Cloudflare Workers deployment
 
-Ask the assistant: “Connect this repository to Cloudflare Pages. Use main for production and keep production changes in pull requests for my approval.” No code editing is needed; account authorization or an initial dashboard connection may be required.
+Cloudflare Workers is already connected to Mister-Bass/ai-game-studio. The repository includes wrangler.jsonc for static asset hosting. It names the Worker ai-game-studio and sets assets.directory to ./dist. Vite creates dist/index.html, the game JavaScript and CSS, and the placeholder assets. No Worker JavaScript entry point is needed for this static game.
 
-Use Git integration and these settings:
+The connected Workers build uses these settings:
 
 | Setting | Value |
 | --- | --- |
-| Framework preset | Vite |
 | Production branch | main |
 | Root directory | repository root |
 | Build command | npm run build |
-| Build output directory | dist |
+| Deploy command | npx wrangler deploy |
+| Static assets directory | ./dist (in wrangler.jsonc) |
+| Worker name | ai-game-studio |
 | NODE_VERSION | 24 |
 
-Enable preview deployments for PR branches if desired. Once connected, Cloudflare deploys main after an approved merge. Keep branch protections enabled to preserve the approval gate. This template prepares the static output; it does not create or deploy a Cloudflare project. public/_headers is copied into dist. Serve the ZIP's playable/ directory over HTTP; double-clicking index.html is unsupported because ES modules require HTTP.
+The npm build script runs vite build. Wrangler is a locked development dependency, so npx wrangler deploy uses the installed version after npm ci. npm run deploy:check runs wrangler deploy --dry-run to validate the deployment without publishing or requiring Cloudflare credentials. Keep main selected as the production branch in the connected Cloudflare build so production updates follow an approved merge. GitHub Actions performs validation and packaging only; it does not publish production. The existing Cloudflare dashboard connection and its production/preview settings are not changed by this configuration PR.
 
-References: [Cloudflare build configuration](https://developers.cloudflare.com/pages/configuration/build-configuration/), [GitHub protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), [Phaser scaling](https://docs.phaser.io/phaser/concepts/scale-manager).
+For future changes, say: “Update the game, run the build and Wrangler deployment check, and open a pull request. Wait for my approval before merging or publishing.” If the existing Worker uses a different name, tell the assistant its name and ask it to update the configuration; you do not need to edit code.
+
+public/_headers is copied into dist for static response headers. Serve the ZIP's playable/ directory over HTTP; double-clicking index.html is unsupported because ES modules require HTTP.
+
+References: [Cloudflare Workers static assets](https://developers.cloudflare.com/workers/static-assets/), [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), [GitHub protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), [Phaser scaling](https://docs.phaser.io/phaser/concepts/scale-manager).

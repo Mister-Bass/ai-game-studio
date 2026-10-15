@@ -6,4 +6,4 @@
 - Keep lesson content in src/content.js where practical. Use local assets with documented rights.
 - Run npm run build, npm test, and npm run package before handing off changes. Report untested behavior.
 - CI required check: Build and browser tests. Do not disable tests to bypass a failing check.
-- Cloudflare Pages: npm run build; output dist; Node 24; production branch main. Preview branches are for review.
+- Cloudflare Workers: npm run build; deploy with npx wrangler deploy; wrangler.jsonc serves assets from ./dist; Node 24; production branch main. Preview branches are for review.
